@@ -39,18 +39,42 @@ source = ColumnDataSource(data=dict(x=x, y=y))
 y_end = max(y)+0.1
 
 # Set up plot
-plot = figure(plot_height=400, plot_width=800, title="Distribuição beta binomial",
+plot = figure(plot_height=400, plot_width=800, title="Distribuição Beta Binomial",
     tools="crosshair,pan,reset,save,wheel_zoom",
-    x_range=[0, initial_n+1], y_range=[0, y_end], 
+    x_range=[-1, initial_n+1], y_range=[0, y_end], 
 )
+
+plot.title.text_font_size = '20pt'
+plot.title.align = 'center'
+
+plot.xaxis.axis_label = 'k'
+plot.xaxis.axis_label_text_font_size = '18pt'
+plot.xaxis.axis_label_standoff = 30
+plot.xaxis.major_tick_line_width = 2
+plot.xaxis.major_tick_in = 0
+plot.xaxis.major_tick_out = 10
+plot.xaxis.major_label_text_font_size = '12pt'
+plot.xaxis.minor_tick_line_width = 1
+
+
+plot.yaxis.axis_label = 'P(X = k)'
+plot.yaxis.axis_label_text_font_size = '18pt'
+plot.yaxis.axis_label_standoff = 30
+plot.yaxis.major_tick_line_width = 2
+plot.yaxis.major_tick_in = 0
+plot.yaxis.major_tick_out = 10
+plot.yaxis.major_label_text_font_size = '12pt'
+plot.yaxis.minor_tick_line_width = 1
+
+
 
 plot.line('x', 'y', source=source, color="red", line_width=3, line_alpha=0.6, line_dash = [6, 3])
 plot.circle('x', 'y', source=source, size=10, color="red", alpha=1)
 
 # set up widgets
 n = Slider(title="n", value=10, start=1, end=30, step=1)
-alpha = Slider(title="alpha", value=1, start=0, end=40, step=0.1)
-beta = Slider(title="beta", value=1, start=0, end=40, step=0.1)
+alpha = Slider(title="alpha", value=2, start=0, end=40, step=0.1)
+beta = Slider(title="beta", value=2, start=0, end=40, step=0.1)
 
 # set up update callbacks
 def update_data(attrname, old, new):
