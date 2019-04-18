@@ -36,18 +36,21 @@ y = beta_binom_density(initial_n, initial_alpha, initial_beta)
 # set up the source
 source = ColumnDataSource(data=dict(x=x, y=y))
 
+y_end = max(y)+0.1
+
 # Set up plot
 plot = figure(plot_height=400, plot_width=800, title="Distribuição beta binomial",
     tools="crosshair,pan,reset,save,wheel_zoom",
-    x_range=[0, initial_n+1], y_range=[0, 0.4]
+    x_range=[0, initial_n+1], y_range=[0, y_end], 
 )
 
-plot.line('x', 'y', source=source, line_width=3, line_alpha=0.6)
+plot.line('x', 'y', source=source, color="red", line_width=3, line_alpha=0.6, line_dash = [6, 3])
+plot.circle('x', 'y', source=source, size=10, color="red", alpha=1)
 
 # set up widgets
 n = Slider(title="n", value=10, start=1, end=30, step=1)
-alpha = Slider(title="alpha", value=1, start=0, end=40, step=0.25)
-beta = Slider(title="beta", value=1, start=0, end=40, step=0.25)
+alpha = Slider(title="alpha", value=1, start=0, end=40, step=0.1)
+beta = Slider(title="beta", value=1, start=0, end=40, step=0.1)
 
 # set up update callbacks
 def update_data(attrname, old, new):
@@ -60,6 +63,10 @@ def update_data(attrname, old, new):
     y = beta_binom_density(curr_n, curr_alpha, curr_beta)
     # update the source
     source.data = dict(x=x, y=y)
+    # update plot scale
+    plot.x_range.end = curr_n+1
+    plot.y_range.end = max(y)+ 0.1
+
 
 # wire the callbacks
 for w in [n, alpha, beta]:
